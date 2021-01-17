@@ -4,6 +4,7 @@ struct Rectangle {
     height: u32,
 }
 
+#[cfg(test)]
 impl Rectangle {
     fn can_hold(&self, other: &Rectangle) -> bool {
         self.width > other.width && self.height > other.height
@@ -15,14 +16,15 @@ pub fn add_two(a: i32) -> i32 {
 }
 
 pub fn greeting(name: &str) -> String {
-    // format!("Hello {}!", name)
-    String::from("Hello!")
+    format!("Hello {}!", name)
 }
 
+#[allow(dead_code)]
 pub struct Guess {
     value: i32,
 }
 
+#[cfg(test)]
 impl Guess {
     pub fn new(value: i32) -> Guess {
         if value < 1 {
@@ -41,6 +43,13 @@ impl Guess {
 
         Guess { value }
     }
+}
+
+#[cfg(test)]
+fn prints_and_returns_10(a: i32) -> i32 {
+    //{}という値を得た
+    println!("I got the value {}", a);
+    10
 }
 
 #[cfg(test)]
@@ -109,5 +118,18 @@ mod tests {
         } else {
             Err(String::from("two plus two does not equal four"))
         }
+    }
+
+    #[test]
+    fn this_test_will_pass() {
+        let value = prints_and_returns_10(4);
+        assert_eq!(10, value);
+    }
+
+    #[test]
+    #[ignore]
+    fn this_test_will_fail() {
+        let value = prints_and_returns_10(8);
+        assert_eq!(5, value);
     }
 }
