@@ -57,9 +57,16 @@ fn main() {
     assert_eq!(5, *y);
 
     let m = MyBox::new(String::from("Rust"));
-    hello(&m);  // == hello(&(&m)[..]);
+    hello(&m); // == hello(&(&m)[..]);
 
-    let c = CustomSmartPointer { data: String::from("my stuff") };      // 俺のもの
-    let d = CustomSmartPointer { data: String::from("other stuff") };   // 別のもの
-    println!("CustomSmartPointers created.");                           // CustomSmartPointerが生成された
+    let c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    }; // 俺のもの
+    drop(c);
+    // mainの終端の前にCustomSmartPointerがドロップされた
+    println!("CustomSmartPointer dropped before the end of main.");
+    let d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    }; // 別のもの
+    println!("CustomSmartPointers created."); // CustomSmartPointerが生成された
 }
